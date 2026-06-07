@@ -1,10 +1,10 @@
-# راهنمای جامع و بی‌دردسر نصب داکر (Docker) با میرورهای داخلی
+# راهنمای جامع نصب داکر (Docker) با میرورهای داخلی
 
 ## پیش‌نیازها
 - **سیستم‌عامل:** Ubuntu (یا توزیع‌های مشابه مبتنی بر Debian)
 - **دسترسی:** کاربر با دسترسی `sudo`
 
->  **توجه بسیار مهم:** در تمام دستورات زیر، عبارت `jammy` را با **Codename** نسخه سیستم‌عامل خودتون جایگزین کنید.
+> **توجه بسیار مهم:** در تمام دستورات زیر، عبارت `jammy` را با **Codename** نسخه سیستم‌عامل خودتون جایگزین کنید.
 > اگر نمی‌دونید کد نیم سیستمتون چیه، از جدول انتهای همین صفحه تقلب کنید!
 
 ---
@@ -21,7 +21,7 @@ deb http://mirror-linux.runflare.com/ubuntu jammy-security main restricted unive
 EOF
 
 ### 🟣 لیارا (Liara)
-```bash
+bash
 sudo tee /etc/apt/sources.list > /dev/null <<EOF
 deb http://linux-mirror.liara.ir/repository/ubuntu jammy main restricted universe multiverse
 deb http://linux-mirror.liara.ir/repository/ubuntu jammy-updates main restricted universe multiverse
@@ -30,7 +30,7 @@ deb http://linux-mirror.liara.ir/repository/ubuntu-security jammy-security main 
 EOF
 
 ### 🟠 آروان‌کلاد (ArvanCloud)
-```bash
+bash
 sudo tee /etc/apt/sources.list > /dev/null <<EOF
 deb http://mirror.arvancloud.ir/ubuntu jammy main restricted universe multiverse
 deb http://mirror.arvancloud.ir/ubuntu jammy-updates main restricted universe multiverse
@@ -43,12 +43,12 @@ EOF
 ## مرحله ۲ — دور زدن موقت خطاهای Security (اختیاری)
 
 بعضی وقت‌ها میرورهای داخلی تو سینک کردن مخازن امنیتی (Security) بازی درمیارن و ارور می‌دن. اگه موقع آپدیت به مشکل خوردید، فایل لیست مخازن رو باز کنید:
-```bash
+bash
 sudo nano /etc/apt/sources.list
 
 و خط مربوط به `security` رو با گذاشتن یک `#` در ابتدای اون کامنت کنید (مثل نمونه زیر):
 
-```bash
+bash
 # deb http://... jammy-security main restricted universe multiverse
 
 ---
@@ -56,7 +56,7 @@ sudo nano /etc/apt/sources.list
 ## مرحله ۳ — آپدیت و نصب پیش‌نیازها
 
 ابزارهای لازم رو نصب کنیم تا سرور برای پذیرایی از داکر آماده بشه:
-```bash
+bash
 sudo apt update
 sudo apt upgrade -y
 sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
@@ -66,24 +66,24 @@ sudo apt install -y apt-transport-https ca-certificates curl software-properties
 ## مرحله ۴ — نصب داکر
 
 ### ۱. اضافه کردن کلید GPG (مخزن داخلی)
-```bash
+bash
 curl -fsSL https://archive.ito.gov.ir/docker-ce/linux/ubuntu/gpg | \
   sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 ### ۲. اضافه کردن مخزن داکر به سورس‌لیست
-```bash
+bash
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://archive.ito.gov.ir/docker-ce/linux/ubuntu jammy stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 ### ۳. نصب خودِ داکر
-```bash
+bash
 sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io
 sudo systemctl restart docker
 
 ### ۴. تست نصب
-وقتشه ببینیم زحماتمون جواب داده یا نه:
-```bash
+
+bash
 sudo docker run hello-world
 
 ---
@@ -100,12 +100,11 @@ sudo docker run hello-world
 
 اگه اسم رمز (Codename) نسخه اوبونتوی خودتون رو یادتون رفته، این جدول برای شماست:
 
-| نسخه Ubuntu | Codename (اسم رمز) |
-|-------------|--------------------|
-| 20.04 LTS   | `focal`            |
-| 22.04 LTS   | `jammy`            |
-| 24.04 LTS   | `noble`            |
+| نسخه Ubuntu | Codename |
+|-------------|----------|
+| 20.04 LTS   | `focal`  |
+| 22.04 LTS   | `jammy`  |
+| 24.04 LTS   | `noble`  |
 
 > **نکته:** برای پیدا کردن کد نیم سیستم خودتون به صورت خودکار و بی‌دردسر، می‌تونید دستور `lsb_release -cs` رو تو ترمینال اجرا کنید.
-
-خیالت راحت، تمام دستورات و تگ‌های کد اصلاح شدن و فاصله‌گذاری‌ها هم طوری تنظیم شده که چشم‌نواز و استاندارد باشه. برو واسه کامیت کردن! 🚀😎
+`
