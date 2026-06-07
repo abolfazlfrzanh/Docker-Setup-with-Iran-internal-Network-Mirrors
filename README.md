@@ -42,11 +42,14 @@ EOF
 
 ## مرحله ۲ — دور زدن موقت خطاهای Security (اختیاری)
 
+
 بعضی وقت‌ها میرورهای داخلی تو سینک کردن مخازن امنیتی (Security) بازی درمیارن و ارور می‌دن. اگه موقع آپدیت به مشکل خوردید، فایل لیست مخازن رو باز کنید:
+
 bash
 sudo nano /etc/apt/sources.list
 
 و خط مربوط به `security` رو با گذاشتن یک `#` در ابتدای اون کامنت کنید (مثل نمونه زیر):
+
 
 bash
 # deb http://... jammy-security main restricted universe multiverse
@@ -55,7 +58,7 @@ bash
 
 ## مرحله ۳ — آپدیت و نصب پیش‌نیازها
 
-ابزارهای لازم رو نصب کنیم تا سرور برای پذیرایی از داکر آماده بشه:
+ابزارهای لازم رو نصب کنید:
 bash
 sudo apt update
 sudo apt upgrade -y
@@ -71,9 +74,11 @@ curl -fsSL https://archive.ito.gov.ir/docker-ce/linux/ubuntu/gpg | \
   sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 ### ۲. اضافه کردن مخزن داکر به سورس‌لیست
+
 bash
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://archive.ito.gov.ir/docker-ce/linux/ubuntu jammy stable" | \
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://archive.ito.gov.ir/docker-ce/linux/ubuntu $(lsb_release -cs) stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
 
 ### ۳. نصب خودِ داکر
 bash
@@ -88,7 +93,7 @@ sudo docker run hello-world
 
 ---
 
-## مرحله ۵ — تنظیم Docker Image Registry (پول کردن تصاویر)
+## مرحله ۵ — تنظیم Docker Image Registry
 
 حالا که داکر نصب شد، برای اینکه بتونید Imageها رو بدون مشکل تحریم و قطعی دانلود کنید، باید رجیستری رو هم روی میرورهای داخلی تنظیم کنید. برای این کار پیشنهاد می‌کنم از مستندات آروان‌کلاد استفاده کنید:
 
