@@ -14,7 +14,7 @@
 یکی از میرورهای زیر را انتخاب کنید:
 
 ### 🔵 Runflare
-```bash
+
 sudo tee /etc/apt/sources.list > /dev/null <<EOF
 deb http://mirror-linux.runflare.com/ubuntu jammy main restricted universe multiverse
 deb http://mirror-linux.runflare.com/ubuntu jammy-updates main restricted universe multiverse
@@ -23,7 +23,7 @@ deb http://mirror-linux.runflare.com/ubuntu jammy-security main restricted unive
 EOF
 
 ### 🟣 Liara
-bash
+
 sudo tee /etc/apt/sources.list > /dev/null <<EOF
 deb http://linux-mirror.liara.ir/repository/ubuntu jammy main restricted universe multiverse
 deb http://linux-mirror.liara.ir/repository/ubuntu jammy-updates main restricted universe multiverse
@@ -32,7 +32,7 @@ deb http://linux-mirror.liara.ir/repository/ubuntu-security jammy-security main 
 EOF
 
 ### 🟠 ArvanCloud
-bash
+
 sudo tee /etc/apt/sources.list > /dev/null <<EOF
 deb http://mirror.arvancloud.ir/ubuntu jammy main restricted universe multiverse
 deb http://mirror.arvancloud.ir/ubuntu jammy-updates main restricted universe multiverse
@@ -45,7 +45,7 @@ EOF
 ## مرحله ۲ — کامنت کردن خط security
 
 فایل را باز کنید:
-bash
+
 nano /etc/apt/sources.list
 
 خط مربوط به security را کامنت کنید:
@@ -56,7 +56,7 @@ nano /etc/apt/sources.list
 
 ## مرحله ۳ — بروزرسانی و نصب پیش‌نیازها
 
-bash
+
 sudo apt update
 sudo apt upgrade -y
 sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
@@ -66,23 +66,23 @@ sudo apt install -y apt-transport-https ca-certificates curl software-properties
 ## مرحله ۴ — نصب داکر
 
 ### اضافه کردن کلید GPG (مخزن وزارت ارتباطات)
-bash
+
 curl -fsSL https://archive.ito.gov.ir/docker-ce/linux/ubuntu/gpg | \
   sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 ### اضافه کردن مخزن داکر
-bash
+
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] \https://archive.ito.gov.ir/docker-ce/linux/ubuntu jammy stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 ### نصب داکر
-bash
+
 sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io
 sudo systemctl restart docker
 
 ### تست نصب
-bash
+
 sudo docker run hello-world
 
 ---
