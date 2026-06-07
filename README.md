@@ -76,8 +76,8 @@ curl -fsSL https://archive.ito.gov.ir/docker-ce/linux/ubuntu/gpg | \
 ### ۲. اضافه کردن مخزن داکر به سورس‌لیست
 
 bash
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://archive.ito.gov.ir/docker-ce/linux/ubuntu $(lsb_release -cs) stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://archive.ito.gov.ir/docker-ce/linux/ubuntu jammy stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
 
 
 ### ۳. نصب خودِ داکر
