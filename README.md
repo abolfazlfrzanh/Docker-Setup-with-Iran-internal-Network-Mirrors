@@ -1,20 +1,17 @@
+# راهنمای جامع و بی‌دردسر نصب داکر (Docker) با میرورهای داخلی
 
-# راهنمای نصب داکر با میرورهای داخلی
+## پیش‌نیازها
+- **سیستم‌عامل:** Ubuntu (یا توزیع‌های مشابه مبتنی بر Debian)
+- **دسترسی:** کاربر با دسترسی `sudo`
 
-## پیش‌نیاز
-سیستم‌عامل: Ubuntu (یا توزیع‌های مشابه Debian-based)
-
-> ⚠️ در تمام دستورات زیر، `jammy` را با **codename** نسخه سیستم‌عاملتان جایگزین کنید.
-> (مثلاً `focal` برای Ubuntu 20.04 یا `noble` برای Ubuntu 24.04)
-
+>  **توجه بسیار مهم:** در تمام دستورات زیر، عبارت `jammy` را با **Codename** نسخه سیستم‌عامل خودتون جایگزین کنید.
+> اگر نمی‌دونید کد نیم سیستمتون چیه، از جدول انتهای همین صفحه تقلب کنید!
 ---
 
-## مرحله ۱ — تنظیم میرور داخلی
+## مرحله ۱ — تنظیم میرور داخلی (Apt Mirrors)
 
-یکی از میرورهای زیر را انتخاب کنید:
-
-### 🔵 Runflare
-bash
+### 🔵 ران‌فلیر (Runflare)
+```bash
 sudo tee /etc/apt/sources.list > /dev/null <<EOF
 deb http://mirror-linux.runflare.com/ubuntu jammy main restricted universe multiverse
 deb http://mirror-linux.runflare.com/ubuntu jammy-updates main restricted universe multiverse
@@ -22,7 +19,7 @@ deb http://mirror-linux.runflare.com/ubuntu jammy-backports main restricted univ
 deb http://mirror-linux.runflare.com/ubuntu jammy-security main restricted universe multiverse
 EOF
 
-### 🟣 Liara
+### 🟣 لیارا (Liara)
 bash
 sudo tee /etc/apt/sources.list > /dev/null <<EOF
 deb http://linux-mirror.liara.ir/repository/ubuntu jammy main restricted universe multiverse
@@ -31,7 +28,7 @@ deb http://linux-mirror.liara.ir/repository/ubuntu jammy-backports main restrict
 deb http://linux-mirror.liara.ir/repository/ubuntu-security jammy-security main restricted universe multiverse
 EOF
 
-### 🟠 ArvanCloud
+### 🟠 آروان‌کلاد (ArvanCloud)
 bash
 sudo tee /etc/apt/sources.list > /dev/null <<EOF
 deb http://mirror.arvancloud.ir/ubuntu jammy main restricted universe multiverse
@@ -42,20 +39,20 @@ EOF
 
 ---
 
-## مرحله ۲ — کامنت کردن خط security
+## مرحله ۲ — دور زدن موقت خطاهای Security (اختیاری)
 
-فایل را باز کنید:
+بعضی وقت‌ها میرورهای داخلی تو سینک کردن مخازن امنیتی (Security) بازی درمیارن و ارور می‌دن. اگه موقع آپدیت به مشکل خوردید، فایل لیست مخازن رو باز کنید:
 bash
-nano /etc/apt/sources.list
-
-خط مربوط به security را کامنت کنید:
+sudo nano /etc/apt/sources.list
+و خط مربوط به `security` رو با گذاشتن یک `#` در ابتدای اون کامنت کنید:
 bash
-#deb http://linux-mirror.liara.ir/repository/ubuntu-security jammy-security main restricted universe multiverse
+# deb http://... jammy-security main restricted universe multiverse
 
 ---
 
-## مرحله ۳ — بروزرسانی و نصب پیش‌نیازها
+## مرحله ۳ — آپدیت و نصب پیش‌نیازها
 
+ابزارهای لازم رو نصب کنیم:
 bash
 sudo apt update
 sudo apt upgrade -y
@@ -63,42 +60,46 @@ sudo apt install -y apt-transport-https ca-certificates curl software-properties
 
 ---
 
-## مرحله ۴ — نصب داکر
+## مرحله ۴
 
-### اضافه کردن کلید GPG (مخزن وزارت ارتباطات)
+### ۱. اضافه کردن کلید GPG (مخزن داخلی)
 bash
 curl -fsSL https://archive.ito.gov.ir/docker-ce/linux/ubuntu/gpg | \
   sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
-### اضافه کردن مخزن داکر
+### ۲. اضافه کردن مخزن داکر به سورس‌لیست
 bash
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] \https://archive.ito.gov.ir/docker-ce/linux/ubuntu jammy stable" | \
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://archive.ito.gov.ir/docker-ce/linux/ubuntu jammy stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-### نصب داکر
+### ۳. نصب خودِ داکر
 bash
 sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io
 sudo systemctl restart docker
 
-### تست نصب
+### ۴. تست نصب
 bash
 sudo docker run hello-world
 
 ---
 
-## مرحله ۵ — تنظیم Docker Image Registry
+## 📦 مرحله ۵ — تنظیم Docker Image Registry (پول کردن تصاویر)
 
-برای اضافه کردن Image Registry داخلی، به مستندات ArvanCloud مراجعه کنید:
+حالا که داکر نصب شد، برای اینکه بتونید Image ها رو بدون مشکل تحریم و قطعی دانلود کنید، باید رجیستری رو هم روی میرورهای داخلی تنظیم کنید. برای این کار پیشنهاد می‌کنم از مستندات آروان‌کلاد استفاده کنید:
 
-📖 [راهنمای Docker Registry در ArvanCloud](https://www.arvancloud.ir/fa/dev/docker)
+📖 [راهنمای تنظیم Docker Registry در آروان‌کلاد](https://www.arvancloud.ir/fa/dev/docker)
 
 ---
 
-## 📋 خلاصه codename ها
+## 📋 تقلب‌نامه Codename های اوبونتو
 
-| نسخه Ubuntu | Codename |
-|-------------|----------|
-| 20.04 LTS   | focal    |
-| 22.04 LTS   | jammy    |
-| 24.04 LTS   | noble    |
+اگه اسم رمز (Codename) نسخه اوبونتوی خودتون رو یادتون رفته، این جدول برای شماست:
+
+| نسخه Ubuntu | Codename (اسم رمز) |
+|-------------|--------------------|
+| 20.04 LTS   | `focal`            |
+| 22.04 LTS   | `jammy`            |
+| 24.04 LTS   | `noble`            |
+
+> **نکته:** برای پیدا کردن کد نیم سیستم خودتون به صورت خودکار، می‌تونید دستور `lsb_release -cs` رو تو ترمینال اجرا کنید.
